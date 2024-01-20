@@ -1,0 +1,49 @@
+# Virtual Environments for Jupyter Notebooks
+Jupyter notebook has a default kernel it uses.
+To use a notebook within a virtual environment, we need to manually override this kernel with a kernel of our choice (i.e. newly created virtual environment).
+
+1. Create virtual environment as normal
+virtualenv .venv
+replacing ‘.venv’ with the name you want to give this virtual environment.
+
+Confirm with
+pip list
+
+2. Activate the environment using:
+source .venv/bin/activate
+
+3. Install Jupyter Notebook into virtual environment
+Now we want to (re)install jupyter notebook within this environment using:
+python3 -m pip install ipykernel
+
+pip install jupyterlab
+jupyter lab
+pip install notebook
+
+## To run the jupyter notebook
+$ jupyter notebook
+
+4. OPTIONAL: Now install any python package (e.g. openai)
+$ python3 -m pip install openai
+At this point I expected all parts in place to start working within the virtual environment within the jupyter notebook.
+However when I launched a notebook using jupyter notebook I found that the installed modules were not working when imported into the jupyter notebook.
+
+How can it work in our shell but not our notebook?
+What is happening is Jupyter Notebook has a default kernel it uses.
+We need to manually add our virtual environment as an alternative kernel for Jupyter Notebook to use.
+
+5. Allow Jupyter access to the kernel within our new virtual environment
+The final step involves running the following command, which adds the newly created ‘.venv’ environment to the list of accessible kernels for Jupyter Notebook.
+
+python3 -m ipykernel install --user --name=.venv
+You should receive a confirmation in your bash 
+“Installed kernelspec .venv in /Users/USERNAME/Library/Jupyter/kernels”.
+
+After this, launch a new jupyter notebook instance and create a new notebook.
+On the toolbar, select ‘Kernel’ and ‘Change Kernel’.
+The new kernel should now be available in the list for selection.
+Select the name of the new virtual environment, and install modules should be available for importing.
+
+
+After you are done with the project and no longer need the kernel you can uninstall it by running the following code:
+jupyter-kernelspec uninstall .venv

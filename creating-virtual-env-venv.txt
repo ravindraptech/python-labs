@@ -1,0 +1,94 @@
+# Creating python virtual environment
+venv (for Python 3) allows you to manage separate package installations for different projects. It creates a “virtual” isolated Python installation. When you switch projects, you can create a new virtual environment which is isolated from other virtual environments. You benefit from the virtual environment since packages can be installed confidently and will not interfere with another project’s environment.
+
+## It is recommended to use a virtual environment when working with third party packages.	
+
+To create a virtual environment, go to your project’s directory and run the following command. This will create a new virtual environment in a local folder named .venv:
+$ python3 -m venv .venv
+
+venv will create a virtual Python installation in the .venv folder.
+
+## You should exclude your virtual environment directory from your version control system using .gitignore or similar.
+
+## Activate a virtual environment
+Before you can start installing or using packages in your virtual environment you’ll need to activate it. Activating a virtual environment will put the virtual environment-specific python and pip executables into your shell’s PATH.
+$ source .venv/bin/activate
+
+## To confirm the virtual environment is activated, check the location of your Python interpreter:
+which python
+
+While the virtual environment is active, the above command will output a filepath that includes the .venv directory, by ending with the following:
+.venv/bin/python
+
+While a virtual environment is activated, pip will install packages into that specific environment. This enables you to import and use packages in your Python application.
+
+## Deactivate a virtual environment
+If you want to switch projects or leave your virtual environment, deactivate the environment:
+$ deactivate
+
+Closing your shell will deactivate the virtual environment. If you open a new shell window and want to use the virtual environment, reactivate it.
+
+Reactivate a virtual environment
+If you want to reactivate an existing virtual environment, follow the same instructions about activating a virtual environment. There’s no need to create a new virtual environment.
+
+## You can make sure that pip is up-to-date by running:
+$ python3 -m pip install --upgrade pip
+$ python3 -m pip --version
+
+## Install packages using pip
+When your virtual environment is activated, you can install packages. Use the pip install command to install packages.
+
+## Install a package
+For example,let’s install the Requests library from the Python Package Index (PyPI):
+$ python3 -m pip install requests
+
+Install a specific package version
+$ python3 -m pip install 'requests==2.18.4'
+
+Install from local archives
+$ python3 -m pip install requests-2.18.4.tar.gz
+
+
+Upgrading packages
+pip can upgrade packages in-place using the --upgrade flag. For example, to install the latest version of requests and all of its dependencies:
+$ python3 -m pip install --upgrade requests
+
+
+
+
+Using a requirements file
+Instead of installing packages individually, pip allows you to declare all dependencies in a Requirements File. For example you could create a requirements.txt file containing:
+requests==2.18.4
+google-auth==1.1.0
+And tell pip to install all of the packages in this file using the -r flag:
+$ python3 -m pip install -r requirements.txt
+
+
+Freezing dependencies
+Pip can export a list of all installed packages and their versions using the freeze command:
+$ python3 -m pip freeze
+
+The pip freeze command is useful for creating Requirements Files that can re-create the exact versions of all packages installed in an environment.
+$ pip freeze > requirements.txt
+
+# virtualenv
+virtualenv is a tool for creating isolated Python Virtual Environments, like venv. Unlike venv, virtualenv can create virtual environments for other versions of Python, which it locates using the PATH environment variable. It also provides convenient features for configuring, maintaining, duplicating, and troubleshooting virtual environments. 
+
+
+# Is the Virtual Environment Working?
+We have activated our virtual environment, now how do we confirm that our project is in fact isolated from our host Python? We can do a couple of things.
+First we check the list of packages installed in our virtual environment by running the code below in the activated virtual environment. You will notice only two packages – pip and setuptools, which are the base packages that come default with a new virtual environment
+pip list
+Next you can run the same code above in a new terminal in which you haven't activated the virtual environment. You will notice a lot more libraries in your host Python that you may have installed in the past. These libraries are not part of your Python virtual environment until you install them.
+
+Requirements File
+Why is a requirements file important to your project? Consider that you package your project in a zip file (without the env folder) and you share with your developer friend.
+
+To recreate your development environment, your friend will just need to follow the above steps to activate a new virtual environment.
+
+Instead of having to install each dependency one by one, they could just run the code below to install all your dependencies within their own copy of the project:
+
+ ~ pip install -r requirements.txt
+Note that it is generally not advisable to share your env folder, and it should be easily replicated in any new environment.
+
+Typically your env directory will be included in a .gitignore file (when using version control platforms like GitHub) to ensure that the environment file is not pushed to the project repository.
